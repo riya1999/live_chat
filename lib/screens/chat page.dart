@@ -217,12 +217,12 @@ class ChatPageState extends State<ChatPage> {
                     },
                     errorBuilder: (context, object, stackTrace) {
                       return Material(
-                        borderRadius: BorderRadius.all(
+                        borderRadius: const BorderRadius.all(
                           Radius.circular(8),
                         ),
                         clipBehavior: Clip.hardEdge,
                         child: Image.asset(
-                          'images/img_not_available.jpeg',
+                          'assets/images/img_not_available.jpeg',
                           width: 200,
                           height: 200,
                           fit: BoxFit.cover,
@@ -238,9 +238,9 @@ class ChatPageState extends State<ChatPage> {
             )
             // Sticker
                 : Container(
-              margin: EdgeInsets.only(bottom: isLastMessageRight(index) ? 20 : 10, right: 10),
-              child: Image.asset(
-                'images/${messageChat.content}.gif',
+                  margin: EdgeInsets.only(bottom: isLastMessageRight(index) ? 20 : 10, right: 10),
+                 child: Image.asset(
+                'assets/images/${messageChat.content}.gif',
                 width: 100,
                 height: 100,
                 fit: BoxFit.cover,
@@ -251,7 +251,7 @@ class ChatPageState extends State<ChatPage> {
       } else {
         // Left (peer message)
         return Container(
-          margin: EdgeInsets.only(bottom: 10),
+          margin: const EdgeInsets.only(bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -259,13 +259,13 @@ class ChatPageState extends State<ChatPage> {
                 children: <Widget>[
                   isLastMessageLeft(index)
                       ? Material(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(18),
-                    ),
-                    clipBehavior: Clip.hardEdge,
-                    child: Image.network(
-                      widget.arguments.peerAvatar,
-                      loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                       borderRadius: const BorderRadius.all(
+                        Radius.circular(18),
+                       ),
+                      clipBehavior: Clip.hardEdge,
+                       child: Image.network(
+                       widget.arguments.peerAvatar,
+                       loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
                         if (loadingProgress == null) return child;
                         return Center(
                           child: CircularProgressIndicator(
@@ -348,7 +348,7 @@ class ChatPageState extends State<ChatPage> {
                             ),
                             clipBehavior: Clip.hardEdge,
                             child: Image.asset(
-                              'images/img_not_available.jpeg',
+                              'assets/images/img_not_available.jpeg',
                               width: 200,
                               height: 200,
                               fit: BoxFit.cover,
@@ -364,7 +364,7 @@ class ChatPageState extends State<ChatPage> {
                       : Container(
                     margin: EdgeInsets.only(bottom: isLastMessageRight(index) ? 20 : 10, right: 10),
                     child: Image.asset(
-                      'images/${messageChat.content}.gif',
+                      'assets/images/${messageChat.content}.gif',
                       width: 100,
                       height: 100,
                       fit: BoxFit.cover,
@@ -430,8 +430,7 @@ class ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          this.widget.arguments.peerNickname,
+        title: Text( widget.arguments.peerNickname,
           style: TextStyle(color: ColorConstants.primaryColor),
         ),
         centerTitle: true,
@@ -445,15 +444,12 @@ class ChatPageState extends State<ChatPage> {
                 children: <Widget>[
                   // List of messages
                   buildListMessage(),
-
                   // Sticker
                   isShowSticker ? buildSticker() : SizedBox.shrink(),
-
                   // Input content
                   buildInput(),
                 ],
               ),
-
               // Loading
               buildLoading()
             ],
@@ -479,7 +475,7 @@ class ChatPageState extends State<ChatPage> {
                 TextButton(
                   onPressed: () => onSendMessage('mimi1', TypeMessage.sticker),
                   child: Image.asset(
-                    'images/mimi1.gif',
+                    'assets/images/mimi1.gif',
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
@@ -488,7 +484,7 @@ class ChatPageState extends State<ChatPage> {
                 TextButton(
                   onPressed: () => onSendMessage('mimi2', TypeMessage.sticker),
                   child: Image.asset(
-                    'images/mimi2.gif',
+                    'assets/images/mimi2.gif',
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
@@ -497,7 +493,7 @@ class ChatPageState extends State<ChatPage> {
                 TextButton(
                   onPressed: () => onSendMessage('mimi3', TypeMessage.sticker),
                   child: Image.asset(
-                    'images/mimi3.gif',
+                    'assets/images/mimi3.gif',
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
@@ -511,7 +507,7 @@ class ChatPageState extends State<ChatPage> {
                 TextButton(
                   onPressed: () => onSendMessage('mimi4', TypeMessage.sticker),
                   child: Image.asset(
-                    'images/mimi4.gif',
+                    'assets/images/mimi4.gif',
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
@@ -520,7 +516,7 @@ class ChatPageState extends State<ChatPage> {
                 TextButton(
                   onPressed: () => onSendMessage('mimi5', TypeMessage.sticker),
                   child: Image.asset(
-                    'images/mimi5.gif',
+                    'assets/images/mimi5.gif',
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
@@ -529,7 +525,7 @@ class ChatPageState extends State<ChatPage> {
                 TextButton(
                   onPressed: () => onSendMessage('mimi6', TypeMessage.sticker),
                   child: Image.asset(
-                    'images/mimi6.gif',
+                    'assets/images/mimi6.gif',
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
@@ -543,7 +539,7 @@ class ChatPageState extends State<ChatPage> {
                 TextButton(
                   onPressed: () => onSendMessage('mimi7', TypeMessage.sticker),
                   child: Image.asset(
-                    'images/mimi7.gif',
+                    'assets/images/mimi7.gif',
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
@@ -552,7 +548,7 @@ class ChatPageState extends State<ChatPage> {
                 TextButton(
                   onPressed: () => onSendMessage('mimi8', TypeMessage.sticker),
                   child: Image.asset(
-                    'images/mimi8.gif',
+                    'assets/images/mimi8.gif',
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
@@ -561,7 +557,7 @@ class ChatPageState extends State<ChatPage> {
                 TextButton(
                   onPressed: () => onSendMessage('mimi9', TypeMessage.sticker),
                   child: Image.asset(
-                    'images/mimi9.gif',
+                    'assets/images/mimi9.gif',
                     width: 50,
                     height: 50,
                     fit: BoxFit.cover,
@@ -651,8 +647,8 @@ class ChatPageState extends State<ChatPage> {
     return Flexible(
       child: groupChatId.isNotEmpty
           ? StreamBuilder<QuerySnapshot>(
-        stream: chatProvider.getChatStream(groupChatId, _limit),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            stream: chatProvider.getChatStream(groupChatId, _limit),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
             listMessage = snapshot.data!.docs;
             if (listMessage.length > 0) {
@@ -664,10 +660,11 @@ class ChatPageState extends State<ChatPage> {
                 controller: listScrollController,
               );
             } else {
-              return Center(child: Text("No message here yet..."));
+              return const Center(
+                  child: Text("No message here yet..."));
             }
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(
                 color: ColorConstants.themeColor,
               ),

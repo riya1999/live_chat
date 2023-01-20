@@ -80,6 +80,15 @@ flutter:
     - assets/images/google_login.jpeg
     - assets/images/app_icon.png
     - assets/images/back.png
+    - assets/images/mimi1.gif
+    - assets/images/mimi2.gif
+    - assets/images/mimi3.gif
+    - assets/images/mimi4.gif
+    - assets/images/mimi5.gif
+    - assets/images/mimi6.gif
+    - assets/images/mimi7.gif
+    - assets/images/mimi8.gif
+    - assets/images/mimi9.gif
     - assets/images/splash.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
