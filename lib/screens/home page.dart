@@ -22,7 +22,7 @@ import 'chat page.dart';
 import 'login page.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State createState() => HomePageState();
@@ -78,9 +78,8 @@ class HomePageState extends State<HomePage> {
     btnClearController.close();
   }
 
-  void registerNotification() {
+/*  void registerNotification() {
     firebaseMessaging.requestPermission();
-
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('onMessage: $message');
       if (message.notification != null) {
@@ -97,13 +96,47 @@ class HomePageState extends State<HomePage> {
     }).catchError((err) {
       Fluttertoast.showToast(msg: err.message.toString());
     });
-  }
+  }*/
 
-  void configLocalNotification() {
-    AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-    InitializationSettings initializationSettings =
-    InitializationSettings(android: initializationSettingsAndroid);
-    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  void registerNotification() async{
+    firebaseMessaging.requestPermission();
+    FirebaseMessaging.onMessage.listen((event) {(Map<String, dynamic> message) {
+      print('onMessage: $message');
+      Platform.isAndroid
+          ? showNotification(message['notification'])
+          : showNotification(message['aps']['alert']);
+      return;
+    };
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('onResume: $message');
+    });
+
+    firebaseMessaging.getToken().then((token) {
+      print('token: $token');
+      if (token != null) {
+        homeProvider.updateDataFirestore(FirestoreConstants.pathUserCollection, currentUserId, {'pushToken': token});
+      }
+    }).catchError((err) {
+      Fluttertoast.showToast(msg: err.message.toString());
+    });
+  }
+  Future<void> configLocalNotification() async {
+    AndroidInitializationSettings initializationSettingsAndroid = const AndroidInitializationSettings('app_icon');
+    if (Platform.isIOS) {
+      await flutterLocalNotificationsPlugin.initialize(
+        const InitializationSettings(
+          iOS: DarwinInitializationSettings(),
+        ),
+      );
+    }
+
+    await flutterLocalNotificationsPlugin.initialize(InitializationSettings(android: initializationSettingsAndroid));
+
+    // InitializationSettings initializationSettings =
+    // InitializationSettings(android: initializationSettingsAndroid);
+    // flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
   void scrollListener() {
@@ -132,8 +165,8 @@ class HomePageState extends State<HomePage> {
       importance: Importance.max,
       priority: Priority.high,
     );
-     //IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+    DarwinNotificationDetails iOSPlatformChannelSpecifics = DarwinNotificationDetails();
+    NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics , iOS: iOSPlatformChannelSpecifics);
 
     print(remoteNotification);
 
@@ -356,7 +389,7 @@ class HomePageState extends State<HomePage> {
                         _textSearch = "";
                       });
                     },
-                    child: Icon(Icons.clear_rounded, color: ColorConstants.greyColor, size: 20))
+                    child: const Icon(Icons.clear_rounded, color: ColorConstants.greyColor, size: 20))
                     : SizedBox.shrink();
               }),
         ],
@@ -432,16 +465,16 @@ class HomePageState extends State<HomePage> {
                   clipBehavior: Clip.hardEdge,
                   child: userChat.photoUrl.isNotEmpty
                       ? Image.network(
-                    userChat.photoUrl,
-                    fit: BoxFit.cover,
-                    width: 50,
-                    height: 50,
-                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Container(
+                        userChat.photoUrl,
+                        fit: BoxFit.cover,
                         width: 50,
                         height: 50,
-                        child: Center(
+                       loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                       if (loadingProgress == null) return child;
+                        return Container(
+                        width: 50,
+                        height: 50,
+                         child: Center(
                           child: CircularProgressIndicator(
                             color: ColorConstants.themeColor,
                             value: loadingProgress.expectedTotalBytes != null
@@ -450,9 +483,9 @@ class HomePageState extends State<HomePage> {
                           ),
                         ),
                       );
-                    },
-                    errorBuilder: (context, object, stackTrace) {
-                      return const Icon(
+                      },
+                      errorBuilder: (context, object, stackTrace) {
+                       return const Icon(
                         Icons.account_circle,
                         size: 50,
                         color: ColorConstants.greyColor,
